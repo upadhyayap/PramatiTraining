@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+/**
+ * @author anandu
+ *
+ */
+public class CrawlerConstants {
+
+	/**
+	 * 
+	 */
+	public CrawlerConstants() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

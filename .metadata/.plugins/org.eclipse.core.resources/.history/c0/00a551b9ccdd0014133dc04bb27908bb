@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * @author anandu
+ *
+ */
+public class EmailPage extends Webpage {
+
+	private URL Url;
+	private ArrayBlockingQueue<WebElement> linkQueue;
+	/**
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public EmailPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	public EmailPage(URL url) {
+		this.Url = url;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return Url;
+	}
+
+	@Override
+	public Object load(Object url) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object parse(Object url) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object save(Object url) throws Exception {
+		/*1. observe WebImage queue and call the save method
+		  2. observe WebLink queue and call the save method*/
+		return null;
+	}
+	
+}

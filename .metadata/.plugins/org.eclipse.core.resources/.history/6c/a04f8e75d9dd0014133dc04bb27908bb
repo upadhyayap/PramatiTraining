@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebMailLink {
+
+	/**
+	 * 
+	 */
+	public WebMailLink() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.Entities;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebURL {
+
+	/**
+	 * 
+	 */
+	public WebURL() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

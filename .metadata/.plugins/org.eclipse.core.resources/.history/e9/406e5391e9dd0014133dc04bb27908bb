@@ -1,0 +1,37 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.URL;
+
+/**
+ * @author anandu
+ *
+ */
+public abstract class Webpage implements Page{
+	
+	protected URL url;
+	protected byte[] content;
+	/**
+	 * 
+	 */
+	public Webpage() {
+		
+	}
+	/**
+	 * @param url
+	 */
+	public Webpage(URL url) {
+		this.url = url;
+		
+	}
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.Page#load(java.lang.Object)
+	 */
+	@Override
+	public Object load(Object url) throws Exception {
+		
+		return null;
+	}
+}

@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebmailPage extends Webpage {
+
+	/**
+	 * 
+	 */
+	
+	private URL Url;
+	/**
+	 * 
+	 */
+	
+	private ArrayBlockingQueue<WebElement> linkQueue;
+	
+	/**
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebmailPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	public WebmailPage(URL url) {
+		this.Url = url;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return Url;
+	}
+
+	@Override
+	public Object parse(Object url) throws Exception {
+		// start a parser thread which will extract the links from webpage and put them in linkQueue. 
+		// Save Thread will observe the continueously to get the link object. 
+		return null;
+	}
+
+	@Override
+	public Object save(Object url) throws Exception {
+		/*1. observe WebElement Queue and */
+		return null;
+	}
+	
+}

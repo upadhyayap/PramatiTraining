@@ -1,0 +1,36 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.File;
+
+import com.pramati.imaginea.base.crawlable;
+
+/**
+ * This is a singleton class used to download data from given URL. Internally it
+ * uses Web Page class and crawl the web page using crawl method.
+ * 
+ * @author anandu
+ *
+ */
+public class DownloadRepository {
+	crawlable gWebpage;
+	/**
+	 * 
+	 */
+	public DownloadRepository() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DownloadRepository(String url) {
+
+	}
+	
+	/**
+	 * @param targetFolder
+	 */
+	public void saveOffline(File targetFolder) {
+
+	}
+}

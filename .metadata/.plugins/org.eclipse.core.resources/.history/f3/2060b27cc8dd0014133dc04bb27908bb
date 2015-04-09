@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public abstract class Webpage {
+
+	/**
+	 * 
+	 */
+	public Webpage() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

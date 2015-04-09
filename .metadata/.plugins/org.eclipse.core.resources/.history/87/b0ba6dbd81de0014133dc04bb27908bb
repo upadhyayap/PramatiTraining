@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.Exceptions;
+
+/**
+ * @author anandu
+ *
+ */
+public class ShutDown {
+
+	/**
+	 * 
+	 */
+	public ShutDown() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

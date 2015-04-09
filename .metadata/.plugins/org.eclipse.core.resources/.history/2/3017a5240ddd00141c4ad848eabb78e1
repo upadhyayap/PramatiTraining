@@ -1,0 +1,41 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import com.pramati.imaginea.base.crawlable;
+
+/** Http specific implementation of crawlable interface
+ * @author anandu
+ */
+public class HttpWebpage implements crawlable {
+	
+	 /** URL of the web page used to crawl the page further.This URL represents a perticular web page */
+	private String gUrl;
+	/**  */
+	private BlockingQueue<String> workQueue = null;
+
+	/** Constructor which takes the URL of the Web page as a Parameter and initiates the web page class
+	 * @param Url
+	 */
+	public HttpWebpage(String Url) {
+		this.gUrl = Url;
+	}
+
+	public String getgUrl() {
+		return gUrl;
+	}
+
+	@Override
+	public void crawl() throws Throwable {
+		
+		workQueue = new ArrayBlockingQueue<String>(150);
+		new Thread(new Reader(workQueue, gUrl)).start();
+		new Thread(new Parser(workQueue)).start();
+
+	}
+
+}

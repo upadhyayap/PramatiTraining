@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.pramati.imaginea.Entities.mail;
+import com.pramati.imaginea.base.crawlable;
+
+/**
+ * @author anandu
+ *
+ */
+public class HttpWebpage implements crawlable {
+
+	private String gUrl;
+	
+
+	/**
+	 * @param Url
+	 */
+	public HttpWebpage(String Url) {
+		this.gUrl = Url;
+	}
+
+	@Override
+	public mail crawl() throws JAXBException, IOException {
+		   ArrayList<HttpWebpage> lInnerLinks = fetchLinks(gUrl.toString());
+		   
+		    JAXBContext jaxbContext = JAXBContext.newInstance(mail.class);  
+	        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();  
+	        mail email= (mail) jaxbUnmarshaller.unmarshal(new URL(gUrl));
+	        return email;
+	}
+
+	private ArrayList<HttpWebpage> fetchLinks(String pThreadUrl)
+			throws IOException {
+		ArrayList<HttpWebpage> lLinks = new ArrayList<HttpWebpage>();
+		Document doc = Jsoup.connect(pThreadUrl).get();
+		Elements links = doc.select("a[href]");
+		for (Element link : links) {
+			if (links.attr("href").contains("@")) {
+				lLinks.add(new HttpWebpage(gUrl + "/ajax/" + link.attr("href")));
+			}
+		}
+		return lLinks;
+	}
+}

@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.util.HashMap;
+
+/** This interface defines methods for crawling without specifying the 
+ * crawling type. Crawling can be done over different protocols 
+ * Implementor of this method is responsible for providing 
+ * the definition of crawl () with specific protocol dependent crawling
+ *   
+ * @author anand Upadhyay
+ *
+ */
+public interface Crawler {
+	
+	/**This method will be implemented to 
+	 * 
+	 */
+	public void Crawl ();
+	
+
+}

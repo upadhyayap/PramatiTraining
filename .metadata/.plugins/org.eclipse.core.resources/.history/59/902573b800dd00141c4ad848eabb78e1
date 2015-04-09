@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+/**
+ * @author anandu
+ *
+ */
+public class printthread {
+
+	/**
+	 * 
+	 */
+	public printthread() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

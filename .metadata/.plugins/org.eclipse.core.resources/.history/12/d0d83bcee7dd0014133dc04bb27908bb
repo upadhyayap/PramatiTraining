@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.BlockingQueue;
+
+import javax.xml.bind.ValidationException;
+
+import com.pramati.imaginea.bObj.Parser;
+import com.pramati.imaginea.bObj.Reader;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebmailPage extends Webpage {
+
+	/**
+	 * 
+	 */
+	
+	private URL Url;
+	/**
+	 * 
+	 */
+	
+	private BlockingQueue<WebElement> linkQueue;
+	private File saveDirectory;
+
+	/**
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebmailPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	public WebmailPage(URL url) {
+		this.Url = url;
+	}
+	
+	/**
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return Url;
+	}
+	/**
+	 * @return the saveDirectory
+	 */
+	public File getSaveDirectory() {
+		return saveDirectory;
+	}
+
+	/**
+	 * @param saveDirectory the saveDirectory to set
+	 */
+	public void setSaveDirectory(File saveDirectory) {
+		this.saveDirectory = saveDirectory;
+	}
+	@Override
+	public void parse(String url) throws Exception {
+		
+		new Thread(new Reader(linkQueue,url)).start();
+		
+	}
+
+	@Override
+	public void save() throws Exception {
+		/*1. observe WebElement Queue and */
+		if (saveDirectory == null) {
+			throw new ValidationException("Save Directory is Defined Please provide the save Directory");
+		}
+		
+		parse(url.toString());
+		new Thread(new Parser(linkQueue));
+		
+	}
+	
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.Throwable"/>
+<fullyQualifiedTypeName name="java.util.concurrent.BlockingQueue"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ExecutorService"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Executors"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.bObj.Saver"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.startup.printthread"/>
+<fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.Entities.mail"/>
+<fullyQualifiedTypeName name="java.io.FileWriter"/>
+<fullyQualifiedTypeName name="java.io.BufferedWriter"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ArrayBlockingQueue"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.bObj.Reader"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.bObj.Parser"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.base.crawlable"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.bObj.HttpWebpage"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.utilities.CrawlerUtilities"/>
+<fullyQualifiedTypeName name="com.pramati.imaginea.utilities.CrawlerConstants"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+</qualifiedTypeNameHistroy>

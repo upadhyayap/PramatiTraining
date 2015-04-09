@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**fetch links from given url and put in the queue
+ * @author anandu
+ *
+ */
+public class Producer implements Runnable {
+
+	private BlockingQueue<HttpWebpage> glinkQueue = null;
+	private String gUrl;
+	
+	public Producer(BlockingQueue<HttpWebpage> queue,String url) {
+		this.glinkQueue = queue;
+		this.gUrl = url;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	private ArrayList<HttpWebpage> fetchLinks(String pThreadUrl)
+			throws IOException, InterruptedException {
+		ArrayList<HttpWebpage> lLinks = new ArrayList<HttpWebpage>();
+		Document doc = Jsoup.connect(pThreadUrl).get();
+		Elements links = doc.select("a[href]");
+		for (Element link : links) {
+			if (links.attr("href").contains("@")) {
+				glinkQueue.put(new HttpWebpage(gUrl + "/ajax/" + link.attr("href")));
+			}
+		}
+		return lLinks;
+	}
+}

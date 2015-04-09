@@ -1,0 +1,41 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.net.URL;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import com.pramati.imaginea.base.WebElement;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebLink implements WebElement {
+	
+	private URL linkUrl;
+	private Object jaxbEntity;
+	/**
+	 * 
+	 */
+	public WebLink(URL url,Class dataHolder) {
+		this.linkUrl = url;
+		this.jaxbEntity = dataHolder;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.WebElement#save(java.lang.Object)
+	 */
+	@Override
+	public void save(Object targetFile) throws Exception {
+		
+		JAXBContext jaxbContext = JAXBContext.newInstance(jaxbEntity.);  
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();  
+		mail email= (mail) jaxbUnmarshaller.unmarshal(linkUrl);
+		
+	}
+
+}

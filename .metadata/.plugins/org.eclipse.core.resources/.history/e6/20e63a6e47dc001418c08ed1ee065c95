@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.Pojo;
+
+/**
+ * @author anandu
+ *
+ */
+public class Mail {
+
+	/**
+	 * 
+	 */
+	public Mail() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,30 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ * This is a utility class designed for common utility functions
+ * 
+ * @author anandu
+ *
+ */
+public class CrawlerUtilities {
+
+	public static String buildDirectoryName() {
+		String lDir = "";
+		if(CrawlerConstants.osName != null && !CrawlerConstants.osName.equals("") 
+				&& CrawlerConstants.osName.contains("LINUX"))  {
+			
+		}
+		return lDir;
+	}
+
+}

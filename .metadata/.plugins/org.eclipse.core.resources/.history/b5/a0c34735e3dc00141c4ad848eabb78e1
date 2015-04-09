@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.util.concurrent.BlockingQueue;
+
+/**fetch links from given url and put in the queue
+ * @author anandu
+ *
+ */
+public class Producer implements Runnable {
+
+	private BlockingQueue<HttpWebpage> glinkQueue = null;
+	
+	public Producer(BlockingQueue<HttpWebpage> queue) {
+		this.glinkQueue = queue;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

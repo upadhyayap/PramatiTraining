@@ -1,0 +1,27 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.Pojo;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * @author anandu
+ *
+ */
+@XmlRootElement
+public class Mail {
+
+	public String id;
+	public String from;
+	public String subject;
+	public String date;
+	public String contents;
+	/**
+	 * 
+	 */
+	public Mail() {
+		// TODO Auto-generated constructor stub
+	}
+	
+}

@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+import com.pramati.imaginea.bObj.HttpWebpage;
+import com.pramati.imaginea.base.crawlable;
+import com.pramati.imaginea.utilities.CrawlerConstants;
+
+/** Starting point of the Web Crawler Package 
+ * @author anandu
+ *
+ */
+public class Start {
+	
+	/** This Represents a Web page which is Http Specific implementation of crawler interface */
+	
+	private static crawlable gWebpage;
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		try {
+			gWebpage = new HttpWebpage(CrawlerConstants.gRootUrl);
+			gWebpage.crawl();
+		} catch (Throwable e) {
+			System.out.println("Error");
+		}
+	}
+
+}

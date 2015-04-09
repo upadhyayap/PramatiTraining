@@ -1,0 +1,16 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public interface Crawlar {
+	
+	/**
+	 * @param rootpage
+	 */
+	public void crawl (Page rootpage);
+}

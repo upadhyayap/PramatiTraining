@@ -1,0 +1,85 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import com.pramati.imaginea.bObj.Downloader;
+import com.pramati.imaginea.bObj.Parser;
+
+/**This is a concrete class down the page hierarchy.
+ * It is used to represent an Email Thread page which 
+ * differs from normal web page in a sense that this page
+ * has only email thread links which has to be down loaded. 
+ * @author anandu
+ *
+ */
+public class WebPage implements Page {
+
+	/**This represents an url for the webpage. This 
+	 * parameter us mandatory in order to create object 
+	 * of this class because there can not exist a web page
+	 * without an url.
+	 * 
+	 */
+	
+	private URL URL;
+	
+	/**This 
+	 * 
+	 */
+	
+	private BlockingQueue<WebElement> linkQueue;
+
+	/**
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public boolean loaded;
+	public WebPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	public WebPage(URL url) {
+		this.URL = url;
+		this.loaded = false;
+		linkQueue = new ArrayBlockingQueue<WebElement>(150);
+	}
+	
+	/**
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return URL;
+	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#load (java.lang.Object)
+	 */
+	@Override
+	public void load(URL url) throws Exception {
+
+		new Thread(new Parser(linkQueue,URL.toString())).start();
+		this.loaded = true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#save (java.lang.Object)
+	 */
+	@Override
+	public void save() throws Exception {
+		
+		if(!loaded) {
+			load(Url);
+		}
+		new Thread(new Downloader(linkQueue)).start();
+		
+	}
+	
+}

@@ -1,0 +1,32 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.File;
+
+import com.pramati.imaginea.Entities.mail;
+
+/**
+ * @author anandu
+ *
+ */
+public class Saver implements Runnable{
+	
+	private File Directory;
+	private mail email;
+	/**
+	 * 
+	 */
+	public Saver(File file,mail pmail) {
+		this.Directory = file;
+		this.email = pmail;
+	}
+
+	@Override
+	public void run() {
+		
+		
+	}
+
+}

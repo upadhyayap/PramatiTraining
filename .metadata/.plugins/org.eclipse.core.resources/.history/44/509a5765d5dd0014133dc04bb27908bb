@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import com.pramati.imaginea.base.WebElement;
+import com.pramati.imaginea.base.pageContent;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebLink implements WebElement {
+	
+	private URL linkUrl;
+	private pageContent jaxbEntity;
+	private byte[] content;
+	/**
+	 * 
+	 */
+	public WebLink(URL url,pageContent dataHolder) {
+		this.linkUrl = url;
+		this.jaxbEntity = dataHolder;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.WebElement#save(java.lang.Object)
+	 */
+	@Override
+	public void save(Object targetFile) throws Exception {
+		
+		JAXBContext jaxbContext = JAXBContext.newInstance(jaxbEntity.getClass());  
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();  
+		pageContent lresponse = (pageContent) jaxbUnmarshaller.unmarshal(linkUrl);
+		
+	}
+
+	@Override
+	public byte[] load() throws Exception {
+		URLConnection urlc = lurl.openConnection();
+
+		BufferedInputStream buffer = new BufferedInputStream(
+				urlc.getInputStream());
+
+		StringBuilder builder = new StringBuilder();
+		int byteRead;
+		while ((byteRead = buffer.read()) != -1)
+			builder.append((char) byteRead);
+		return null;
+	}
+
+}

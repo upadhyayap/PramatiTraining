@@ -1,0 +1,43 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebCrawlar implements Crawlar {
+
+	private Page webpage;
+	private int crawCapacity;
+	public WebCrawlar(int capacity) {
+		this.crawCapacity = capacity;
+	}
+	/**
+	 * 
+	 */
+	public WebCrawlar(int capacity) {
+		this.crawCapacity = capacity;
+	}
+	
+	/**
+	 * @return the webpage
+	 */
+	public Page getWebpage() {
+		return webpage;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.Crawlar#crawl(com.pramati.imaginea.base.Page)
+	 */
+	@Override
+	public void crawl() {
+		try {
+			webpage.save();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}

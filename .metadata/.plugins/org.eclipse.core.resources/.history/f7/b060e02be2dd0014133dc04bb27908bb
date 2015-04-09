@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.io.File;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+
+/**take data from the queue and hit the url get the mail object and submit the task to executor for saving
+ * @author anandu
+ *
+ */
+public class Parser implements Runnable{
+
+	private static final String SHUTDOWN_REQ = "SHUTDOWN";
+	private BlockingQueue<WebLink> glinkQueue = null;
+	private ExecutorService gThreadPool ;
+	private File Directory ;
+	
+	/**
+	 * 
+	 */
+	public Parser(BlockingQueue<WebLink> queue) {
+		this.glinkQueue = queue;
+	}
+
+	@Override
+	public void run() {
+		
+		
+	}
+
+}

@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+/**
+ * @author anandu
+ *
+ */
+public class CrawlerConstants {
+
+	public static String Dec2014Url = "http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/ajax/";
+
+}

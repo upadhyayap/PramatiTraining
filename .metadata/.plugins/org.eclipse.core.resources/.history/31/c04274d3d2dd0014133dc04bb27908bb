@@ -1,0 +1,15 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public abstract class pageContent {
+	
+	protected String webContent;
+	
+	
+}

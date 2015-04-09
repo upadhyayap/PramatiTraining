@@ -1,0 +1,25 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.URL;
+
+/**
+ * @author anandu
+ *
+ */
+public abstract class Webpage implements Page{
+	
+	protected URL url;
+	/**
+	 * 
+	 */
+	public Webpage() {
+		
+	}
+	public Webpage(URL url) {
+		// TODO Auto-generated constructor stub
+	}
+	
+}

@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ * This is a utility class designed for common utility functions
+ * 
+ * @author anandu
+ *
+ */
+public class CrawlerUtilities {
+
+	public ArrayList<String> getUrlList(String pThreadUrl)
+			throws IOException {
+		ArrayList<String> lLinks = new ArrayList<String>();
+		Document doc = Jsoup.connect(pThreadUrl).get();
+		Elements links = doc.select("a[href]");
+		for (Element link : links) {
+			if (links.attr("href").contains("@")) {
+				lLinks.add(CrawlerConstants.Dec2014CommonUrl + link.attr("href"));
+			}
+		}
+		return lLinks;
+	}
+
+}

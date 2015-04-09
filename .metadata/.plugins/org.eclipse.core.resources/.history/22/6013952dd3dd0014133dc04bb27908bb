@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public abstract class pageContent {
+	
+	protected String webContent;
+
+	public pageContent(String content) {
+		this.webContent = content;
+	}
+	
+	/**
+	 * @return the webContent
+	 */
+	public String getWebContent() {
+		return webContent;
+	}
+}

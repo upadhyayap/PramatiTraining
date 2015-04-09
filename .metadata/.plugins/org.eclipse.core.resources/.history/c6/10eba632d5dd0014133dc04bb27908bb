@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public interface WebElement {
+	
+	public void save(Object targetFile) throws Exception;
+	public void save(Object targetFile) throws Exception;
+}

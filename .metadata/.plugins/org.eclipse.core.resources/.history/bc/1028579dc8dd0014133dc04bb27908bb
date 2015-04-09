@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public class EmailPage extends Webpage{
+
+	/**
+	 * 
+	 */
+	public EmailPage() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public class WebCrawlar implements Crawlar {
+
+	/**
+	 * 
+	 */
+	public WebCrawlar() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.Crawlar#crawl(com.pramati.imaginea.base.Page)
+	 */
+	@Override
+	public void crawl(Page rootpage) {
+		
+		try {
+			rootpage.save();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

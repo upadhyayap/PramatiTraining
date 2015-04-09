@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+/**
+ * @author anandu
+ *
+ */
+public class printthread implements Runnable {
+
+	/**
+	 * 
+	 */
+	public printthread() {
+		// TODO Auto-generated constructor stub
+		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		System.out.println("Executed");
+	}
+
+}

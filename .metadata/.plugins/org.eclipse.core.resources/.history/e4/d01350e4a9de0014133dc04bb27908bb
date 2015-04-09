@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+/** This is an abstract class which provides default implementation of page 
+ * interface down the hierarchy. It reads the data from provided URL and loads
+ * it into a content array which can later on be used as data source to save the 
+ * data to some output folder. 
+ * @author anandu
+ *
+ */
+public abstract class Webpage implements Page{
+	
+	/**This variable is used to represent the url of the web page.
+	 * this is a mandatory field because web page can not exist 
+	 * without a url.
+	 * 
+	 */
+	protected URL url;
+	protected byte[] content = new byte[5000];
+	protected boolean loaded;
+	/**
+	 * 
+	 */
+	public Webpage() {
+		
+	}
+	/**
+	 * @param url
+	 */
+	public Webpage(URL url) {
+		this.url = url;
+		loaded = false;
+	}
+	
+	/**
+	 * @return the content
+	 */
+	public byte[] getContent() {
+		return content;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.Page#load(java.lang.Object)
+	 */
+	@Override
+	public void load(URL url) throws Exception {
+		
+		URLConnection urlc = url.openConnection();
+		BufferedInputStream buffer = new BufferedInputStream(urlc.getInputStream());
+		buffer.read(content);
+		loaded = true;
+	}
+	
+}

@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**This is an generic Interface to represent crawling,
+ * There can be different types of crawlers but the behaiour will
+ * be same.
+ * @author anandu
+ *
+ */
+public interface Crawlar {
+	
+
+	/** Implementor of this interface should provide the definition of
+	 * of crawl method. This is specific to a particular crawler that 
+	 * how that is crawling. 
+	 * @throws Exception
+	 */
+	public void crawl () throws Exception;
+	public void addPage(Page targetPage) throws Exception;
+	public void shutDown() throws Exception;
+}

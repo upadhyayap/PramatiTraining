@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.pramati.imaginea.bObj.HttpWebpage;
+import com.pramati.imaginea.utilities.CrawlerUtilities;
+
+/**
+ * @author anandu
+ *
+ */
+public class Start {
+
+	/**
+	 * 
+	 */
+	public Start() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		crawlable lRootPage = new HttpWebpage(Url);
+		
+	}
+
+}

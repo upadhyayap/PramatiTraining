@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+
+
+/** This interface defines methods for crawling without specifying the 
+ * crawling type. Crawling can be done over different protocols 
+ * Implementor of this method is responsible for providing 
+ * the definition of crawl () with specific protocol dependent crawling
+ *   
+ * @author anand Upadhyay
+ *
+ */
+public interface Crawler {
+	
+	/** primary function of crawler is to crawl for given path. This 
+	 * method is used to define how the crawler will go through the given 
+	 * path
+	 * 
+	 */
+	public void Crawl (Object target);
+	
+
+}

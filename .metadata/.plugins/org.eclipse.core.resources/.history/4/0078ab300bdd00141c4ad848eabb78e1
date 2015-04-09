@@ -1,0 +1,39 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bObj;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import com.pramati.imaginea.base.crawlable;
+
+/**
+ * @author anandu
+ *
+ */
+public class HttpWebpage implements crawlable {
+
+	private String gUrl;
+	private BlockingQueue<String> workQueue = null;
+
+	/**
+	 * @param Url
+	 */
+	public HttpWebpage(String Url) {
+		this.gUrl = Url;
+	}
+	public String getgUrl() {
+		return gUrl;
+	}
+	@Override
+	public void crawl() throws Throwable {
+		
+		workQueue = new ArrayBlockingQueue<String>(150);
+		new Thread(new Reader(workQueue, gUrl)).start();
+		new Thread(new Parser(workQueue)).start();
+		
+	}
+	
+
+}
