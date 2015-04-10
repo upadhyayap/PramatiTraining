@@ -4,6 +4,7 @@
 package com.pramati.imaginea.bObj;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -42,15 +43,17 @@ public class WebCrawlar implements Crawlar {
 	 * taking web elements from this queue to operate over those elements.
 	 * 
 	 */
-	private BlockingQueue<Page> work_Queue;
+	private static BlockingQueue<Page> work_Queue;
 	/**
 	 * This is used for shut down signaling As soon as shutdown request is
 	 * received the crawler will start clearing up it's queued tasks.
 	 * 
 	 */
+	private List<Page> crawledpages;
+	
 	private volatile boolean shutDown_Req = false;
 
-	private volatile boolean Crawlar_Started = false;
+	private volatile boolean started = false;
 
 	private int threshold;
 
@@ -70,6 +73,7 @@ public class WebCrawlar implements Crawlar {
 	 */
 	public WebCrawlar(int capacity) {
 		this.threshold = capacity;
+		crawledpages = new ArrayList<Page>(100);
 		threadPool = Executors.newFixedThreadPool(threshold);
 		work_Queue = new ArrayBlockingQueue<Page>(threshold);
 	}
@@ -100,8 +104,8 @@ public class WebCrawlar implements Crawlar {
 		if (shutDown_Req) {
 			throw new ShutDownException("Crawler already shutted Down");
 		}
-		if (!Crawlar_Started) {
-			Crawlar_Started = true;
+		if (!started) {
+			started = true;
 			new Thread(new Monitor(work_Queue)).start();
 		}
 	}

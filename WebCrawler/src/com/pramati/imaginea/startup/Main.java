@@ -26,28 +26,14 @@ import org.jsoup.select.Elements;
 import org.xml.sax.SAXException;
 
 import com.pramati.imaginea.Entities.mail;
+import com.pramati.imaginea.base.WebPage;
 import com.pramati.imaginea.utilities.CrawlerConstants;
 import com.pramati.imaginea.utilities.CrawlerUtilities;
 
 public class Main {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException {
 		
-			long startTime = System.currentTimeMillis();
-			try {
-				downloadData();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			long EndTime = System.currentTimeMillis();
-			System.out.println("Total time taken" + (EndTime - startTime));
-			//getWebsite();
+			getLinks();
 			
 		
 		
@@ -156,16 +142,28 @@ public class Main {
 	public static void getLinks () {
 		Document doc;
 		try {
-			doc = Jsoup.connect("http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/").get();
-			Elements links = doc.select("a[href]");
-			
-			for (Element link : links) {
-				if (link.attr("href").contains("@")) {
-					System.out.println(link.attr("href"));
-					
+			/*doc = Jsoup.connect("http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/"
+					+ "%3Cm6c5hv$lu1$1@ger.gmane.org%3E").get();*/
+			String url = "http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/";
+			doc = Jsoup.connect(url).get();
+			Elements lText = doc.getAllElements();
+			//StringBuilder sb = new StringBuilder();
+			int linkcount = 0;
+			for (Element lElement : lText) { 
+				/*if(lElement.hasText()) {
+					sb.append(lElement.text());
+				}*/
+				if(lElement.select("a[href]")!=null) {
+					if (lElement.select("a[href]").attr("href").contains("@")) {
+						linkcount++;
+						System.out.println("Web page inserted in the queue with URL  " + url + lElement.select("a[href]").attr("href") );
+					break;
+					} else {
+						System.out.println("not contains @");
+					}
 				}
-				
 			}
+			System.out.println("Link Count " + linkcount);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

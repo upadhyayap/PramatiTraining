@@ -9,7 +9,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.pramati.imaginea.base.WebElement;
-import com.pramati.imaginea.base.pageContent;
 
 /**
  * This Abstract class is an implementation of web element and used to represent

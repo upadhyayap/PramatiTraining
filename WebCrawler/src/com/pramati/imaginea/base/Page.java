@@ -22,7 +22,7 @@ public interface Page {
 	 * @return
 	 * @throws Exception
 	 */
-	public void load(URL url) throws Exception;
+	public void load() throws Exception;
 
 	/**
 	 * This method is used to save loaded data to file.

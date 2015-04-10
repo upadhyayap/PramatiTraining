@@ -7,8 +7,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
 import com.pramati.imaginea.bObj.Downloader;
 import com.pramati.imaginea.bObj.Parser;
+import com.pramati.imaginea.bObj.WebText;
 
 /**
  * This is a concrete class down the page hierarchy. It is used to represent an
@@ -18,6 +20,7 @@ import com.pramati.imaginea.bObj.Parser;
  * @author anandu
  *
  */
+@SuppressWarnings("rawtypes")
 public class WebPage implements Page {
 
 	/**
@@ -27,17 +30,26 @@ public class WebPage implements Page {
 	 * 
 	 */
 
-	private URL URL;
-
+	private URL rootUrl;
+	private String rootHost = "";
 	/**
 	 * This blocking queue is used to hold data contained in the Web page in
 	 * form of web element
 	 */
-
-	private BlockingQueue<WebElement> WORK_OUEUE;
-
-	public boolean loaded;
-
+	
+	@SuppressWarnings("rawtypes")
+	private static volatile BlockingQueue<WebElement> elementQueue;
+	private static volatile BlockingQueue<Page> pageQueue;
+	private boolean loaded;
+	private boolean isPoisionInstance;
+	static {
+		elementQueue = new ArrayBlockingQueue<WebElement>(150);
+		pageQueue = new ArrayBlockingQueue<Page>(150);
+		new Thread(new PageMonitor(pageQueue)).start();
+		new Thread(new Downloader(elementQueue)).start();
+		
+	}
+	
 	/**
 	 * Constructor which takes URL as a String
 	 * 
@@ -55,18 +67,21 @@ public class WebPage implements Page {
 	 * 
 	 */
 	public WebPage(URL url) {
-		this.URL = url;
+		this.rootUrl = url;
 		this.loaded = false;
-		WORK_OUEUE = new ArrayBlockingQueue<WebElement>(150);
+		if (url!=null) {
+			this.rootHost = url.getHost();
+		}
+		
 	}
-
+	
 	/**
 	 * Used to get URl of the Web page
 	 * 
 	 * @return the url
 	 */
 	public URL getUrl() {
-		return URL;
+		return rootUrl;
 	}
 
 	/*
@@ -75,12 +90,12 @@ public class WebPage implements Page {
 	 * @see com.pramati.imaginea.base.Page#load (java.lang.Object)
 	 */
 	@Override
-	public void load(URL url) throws Exception {
+	public void load() throws Exception {
 
-		new Thread(new Parser(WORK_OUEUE, URL.toString())).start();
+		new Thread(new Parser(elementQueue, pageQueue, rootUrl.toString())).start();
 		this.loaded = true;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -90,10 +105,51 @@ public class WebPage implements Page {
 	public void save() throws Exception {
 
 		if (!loaded) {
-			load(URL);
+			load();
+			this.loaded = true;
 		}
-		new Thread(new Downloader(WORK_OUEUE)).start();
+		
+	}
+	
+	private static class PageMonitor implements Runnable {
+		
+		BlockingQueue<Page> workQueue;
 
+		public PageMonitor(BlockingQueue<Page> queue) {
+			this.workQueue = queue;
+		}
+		@Override
+		public void run() {
+			
+			try {
+				WebPage lWebpage;
+				System.out.println("page monitor waiting for data");
+				while ((lWebpage = (WebPage)workQueue.take()).rootUrl != null) {
+					System.out.println("page monitor took the data");
+					lWebpage.load();
+				}
+				URL poisionUrl = null;
+				pageQueue.put(new WebPage(poisionUrl));
+				elementQueue.put(new WebText(null));
+				System.out.println("Poision instances inserted");
+				System.out.println("page monitor existing");
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}	
+	
+	@Override
+	public boolean equals(Object pWebPage) {
+		if(pWebPage instanceof WebPage) {
+			WebPage lWebpage = (WebPage)pWebPage;
+			return lWebpage.getUrl().toString().equals(this.rootUrl.toString());
+		}
+		return false;
 	}
 
 }

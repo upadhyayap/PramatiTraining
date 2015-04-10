@@ -3,6 +3,8 @@
  */
 package com.pramati.imaginea.startup;
 
+import java.net.MalformedURLException;
+
 import com.pramati.imaginea.bObj.WebCrawlar;
 import com.pramati.imaginea.base.Crawlar;
 import com.pramati.imaginea.base.Page;
@@ -23,14 +25,14 @@ public class Start {
 	 * spring bean
 	 */
 
-	private static Page Webpage;
+	//private  Page Webpage;
 
 	/**
 	 * This represents a web crawler which is used to crawl web page. It is web
 	 * specific implementation of crawler interface. later on crawler can also
 	 * be injected through Spring bean.
 	 */
-	private static Crawlar Webcrawlar;
+	//private  Crawlar webcrawlar;
 
 	/**
 	 * Main method of the Application which serves as a Entry point.
@@ -43,14 +45,15 @@ public class Start {
 		try {
 			/******* Initialize instance variables ******/
 
-			Webpage = new WebPage(CrawlerConstants.RootUrl);
-			Webcrawlar = new WebCrawlar();
+			WebPage Webpage = new WebPage(CrawlerConstants.RootUrl);
+			
+			WebCrawlar webcrawlar = new WebCrawlar();
 
-			Webcrawlar.addPage(Webpage);
-			Webcrawlar.crawl();
-			Webcrawlar.shutDown();
+			webcrawlar.addPage(Webpage);
+			webcrawlar.crawl();
+			webcrawlar.shutDown();
 
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Sorry not able to download data");
 		}

@@ -1,0 +1,131 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import com.pramati.imaginea.bObj.Downloader;
+import com.pramati.imaginea.bObj.Parser;
+
+/**
+ * This is a concrete class down the page hierarchy. It is used to represent an
+ * Email Thread page which differs from normal web page in a sense that this
+ * page has only email thread links which has to be down loaded.
+ * 
+ * @author anandu
+ *
+ */
+@SuppressWarnings("rawtypes")
+public class WebPage implements Page {
+
+	/**
+	 * This represents an url for the webpage. This parameter us mandatory in
+	 * order to create object of this class because there can not exist a web
+	 * page without an url.
+	 * 
+	 */
+
+	private URL rootUrl;
+	private String rootHost;
+	/**
+	 * This blocking queue is used to hold data contained in the Web page in
+	 * form of web element
+	 */
+	
+	@SuppressWarnings("rawtypes")
+	private static volatile BlockingQueue<WebElement> elementQueue;
+	private static volatile BlockingQueue<Page> pageQueue;
+	private boolean loaded;
+	
+	static {
+		elementQueue = new ArrayBlockingQueue<WebElement>(150);
+		pageQueue = new ArrayBlockingQueue<Page>(150);
+	}
+	
+	/**
+	 * Constructor which takes URL as a String
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	/**
+	 * Constructor which takes URL as a parameter
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(URL url) {
+		this.rootUrl = url;
+		this.loaded = false;
+		this.rootHost = url.getHost();
+		new Thread(new Downloader(elementQueue)).start();
+	}
+
+	/**
+	 * Used to get URl of the Web page
+	 * 
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return rootUrl;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#load (java.lang.Object)
+	 */
+	@Override
+	public void load(URL url) throws Exception {
+
+		new Thread(new Parser(elementQueue, pageQueue, rootUrl.toString())).start();
+		this.loaded = true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#save (java.lang.Object)
+	 */
+	@Override
+	public void save() throws Exception {
+
+		if (!loaded) {
+			load(rootUrl);
+			this.loaded = true;
+		}
+		
+	}
+	
+	private class PageMonitor implements Runnable {
+		BlockingQueue<Page> work;
+
+		public Monitor(BlockingQueue<Page> queue) {
+			this.work = queue;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}	
+	
+	@Override
+	public boolean equals(Object pWebPage) {
+		if(pWebPage instanceof WebPage) {
+			WebPage lWebpage = (WebPage)pWebPage;
+			return lWebpage.getUrl().toString().equals(this.rootUrl.toString());
+		}
+		return false;
+	}
+
+}
