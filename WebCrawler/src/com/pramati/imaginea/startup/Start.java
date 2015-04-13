@@ -3,12 +3,8 @@
  */
 package com.pramati.imaginea.startup;
 
-import java.net.MalformedURLException;
-
-import com.pramati.imaginea.bObj.WebCrawlar;
-import com.pramati.imaginea.base.Crawlar;
-import com.pramati.imaginea.base.Page;
 import com.pramati.imaginea.base.WebPage;
+import com.pramati.imaginea.bobj.WebCrawlar;
 import com.pramati.imaginea.utilities.CrawlerConstants;
 
 /**
@@ -45,13 +41,13 @@ public class Start {
 		try {
 			/******* Initialize instance variables ******/
 
-			WebPage Webpage = new WebPage(CrawlerConstants.RootUrl);
+			WebPage Webpage = new WebPage(CrawlerConstants.RootUrl+CrawlerConstants.appender);
 			
 			WebCrawlar webcrawlar = new WebCrawlar();
 
 			webcrawlar.addPage(Webpage);
 			webcrawlar.crawl();
-			webcrawlar.shutDown();
+			//webcrawlar.shutDown();
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -5,12 +5,19 @@ package com.pramati.imaginea.base;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import com.pramati.imaginea.bObj.Downloader;
-import com.pramati.imaginea.bObj.Parser;
-import com.pramati.imaginea.bObj.WebText;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.pramati.imaginea.bobj.Downloader;
+import com.pramati.imaginea.bobj.Parser;
+import com.pramati.imaginea.bobj.WebText;
+import com.pramati.imaginea.utilities.CrawlerConstants;
 
 /**
  * This is a concrete class down the page hierarchy. It is used to represent an
@@ -32,19 +39,21 @@ public class WebPage implements Page {
 
 	private URL rootUrl;
 	private String rootHost = "";
+	private WebText textElement;
 	/**
 	 * This blocking queue is used to hold data contained in the Web page in
 	 * form of web element
 	 */
 	
 	@SuppressWarnings("rawtypes")
-	private static volatile BlockingQueue<WebElement> elementQueue;
+	private static volatile  BlockingQueue<WebElement> elementQueue;
 	private static volatile BlockingQueue<Page> pageQueue;
+	//public static ArrayList<String> visitedpages = new ArrayList<String>();
 	private boolean loaded;
-	private boolean isPoisionInstance;
+	
 	static {
 		elementQueue = new ArrayBlockingQueue<WebElement>(150);
-		pageQueue = new ArrayBlockingQueue<Page>(150);
+		pageQueue = new ArrayBlockingQueue<Page>(2);
 		new Thread(new PageMonitor(pageQueue)).start();
 		new Thread(new Downloader(elementQueue)).start();
 		
@@ -83,7 +92,13 @@ public class WebPage implements Page {
 	public URL getUrl() {
 		return rootUrl;
 	}
+	public WebText getTextElement() {
+		return textElement;
+	}
 
+	public void setTextElement(WebText textElement) {
+		this.textElement = textElement;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -123,16 +138,16 @@ public class WebPage implements Page {
 			
 			try {
 				WebPage lWebpage;
-				System.out.println("page monitor waiting for data");
+				//System.out.println("page monitor waiting for data");
 				while ((lWebpage = (WebPage)workQueue.take()).rootUrl != null) {
-					System.out.println("page monitor took the data");
+					//System.out.println("page monitor took the data");
 					lWebpage.load();
 				}
-				URL poisionUrl = null;
+				/*URL poisionUrl = null;
 				pageQueue.put(new WebPage(poisionUrl));
 				elementQueue.put(new WebText(null));
 				System.out.println("Poision instances inserted");
-				System.out.println("page monitor existing");
+				System.out.println("page monitor existing");*/
 			} catch (InterruptedException e) {				
 				e.printStackTrace();
 			} catch (Exception e) {
@@ -151,5 +166,5 @@ public class WebPage implements Page {
 		}
 		return false;
 	}
-
+	
 }

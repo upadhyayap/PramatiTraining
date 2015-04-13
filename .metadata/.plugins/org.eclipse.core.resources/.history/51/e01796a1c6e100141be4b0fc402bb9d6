@@ -1,0 +1,200 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.pramati.imaginea.bObj.Downloader;
+import com.pramati.imaginea.bObj.Parser;
+import com.pramati.imaginea.bObj.WebText;
+import com.pramati.imaginea.utilities.CrawlerConstants;
+
+/**
+ * This is a concrete class down the page hierarchy. It is used to represent an
+ * Email Thread page which differs from normal web page in a sense that this
+ * page has only email thread links which has to be down loaded.
+ * 
+ * @author anandu
+ *
+ */
+@SuppressWarnings("rawtypes")
+public class WebPage implements Page {
+
+	/**
+	 * This represents an url for the webpage. This parameter us mandatory in
+	 * order to create object of this class because there can not exist a web
+	 * page without an url.
+	 * 
+	 */
+
+	private URL rootUrl;
+	private String rootHost = "";
+	/**
+	 * This blocking queue is used to hold data contained in the Web page in
+	 * form of web element
+	 */
+	
+	@SuppressWarnings("rawtypes")
+	private static volatile  BlockingQueue<WebElement> elementQueue;
+	private static volatile BlockingQueue<Page> pageQueue;
+	private boolean loaded;
+	
+	static {
+		elementQueue = new ArrayBlockingQueue<WebElement>(150);
+		pageQueue = new ArrayBlockingQueue<Page>(2);
+		new Thread(new PageMonitor(pageQueue)).start();
+		new Thread(new Downloader(elementQueue)).start();
+		
+	}
+	
+	/**
+	 * Constructor which takes URL as a String
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	/**
+	 * Constructor which takes URL as a parameter
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(URL url) {
+		this.rootUrl = url;
+		this.loaded = false;
+		if (url!=null) {
+			this.rootHost = url.getHost();
+		}
+		
+	}
+	
+	/**
+	 * Used to get URl of the Web page
+	 * 
+	 * @return the url
+	 */
+	public URL getUrl() {
+		return rootUrl;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#load (java.lang.Object)
+	 */
+	@Override
+	public void load() throws Exception {
+
+		//new Thread(new Parser(elementQueue, pageQueue, rootUrl.toString())).start();
+		this.loaded = true;
+		
+		StringBuilder sb = new StringBuilder();
+		//System.out.println("Connecting URl   "+ url);
+		/*Document doc =  Jsoup.connect(url).userAgent("Mozilla/36.0.4").timeout(0).followRedirects(true)
+					    .maxBodySize(1024*1024*3).ignoreContentType(true).get();*/
+		//Elements links = doc.select("a[href]");
+		Document doc = Jsoup.connect(this.rootUrl).userAgent("Mozilla/36.0.4").timeout(0).get();
+		Elements lDomElements = doc.getAllElements();
+		int linkcount = 0;
+		for (Element lElement : lDomElements) { 
+			if(lElement.hasText()) {
+				sb.append(lElement.text());
+			}
+			if(lElement.select("a[href]")!=null) {
+				if (lElement.select("a[href]").attr("href").contains("@")) {
+					if (lElement.select("a[href]").attr("href").contains(CrawlerConstants.appender)) {
+						pageQueue.put(new WebPage(new URL(CrawlerConstants.RootUrl + lElement.select("a[href]").
+								attr("href"))));
+						//System.out.println("Web page inserted in the queue with URL  " +CrawlerConstants.RootUrl + 
+								//lElement.select("a[href]").attr("href"));
+					} else {
+						pageQueue.put(new WebPage(new URL(CrawlerConstants.RootUrl+CrawlerConstants.appender + 
+								lElement.select("a[href]").attr("href"))));
+						//System.out.println("Web page inserted in the queue with URL  " + CrawlerConstants.RootUrl+
+								//CrawlerConstants.appender + lElement.select("a[href]").attr("href"));
+					}
+					linkcount++;
+					/*System.out.println("Web page inserted in the queue with URL  " + url +" ^^appender Appended to ^^"+ 
+					lElement.select("a[href]").attr("href") );*/
+				} else {
+					//System.out.println("not contains @");
+				}
+			}	
+		}
+		if (sb.length()>0) {
+			elementQueue.put(new WebText(sb.toString()));
+			//System.out.println("Web Element inserted in the queue");
+		}
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#save (java.lang.Object)
+	 */
+	@Override
+	public void save() throws Exception {
+
+		if (!loaded) {
+			load();
+			this.loaded = true;
+		}
+		
+	}
+	
+	private static class PageMonitor implements Runnable {
+		
+		BlockingQueue<Page> workQueue;
+
+		public PageMonitor(BlockingQueue<Page> queue) {
+			this.workQueue = queue;
+		}
+		@Override
+		public void run() {
+			
+			try {
+				WebPage lWebpage;
+				//System.out.println("page monitor waiting for data");
+				while ((lWebpage = (WebPage)workQueue.take()).rootUrl != null) {
+					//System.out.println("page monitor took the data");
+					lWebpage.load();
+				}
+				/*URL poisionUrl = null;
+				pageQueue.put(new WebPage(poisionUrl));
+				elementQueue.put(new WebText(null));
+				System.out.println("Poision instances inserted");
+				System.out.println("page monitor existing");*/
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}	
+	
+	@Override
+	public boolean equals(Object pWebPage) {
+		if(pWebPage instanceof WebPage) {
+			WebPage lWebpage = (WebPage)pWebPage;
+			return lWebpage.getUrl().toString().equals(this.rootUrl.toString());
+		}
+		return false;
+	}
+
+}

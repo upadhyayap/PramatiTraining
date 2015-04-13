@@ -34,7 +34,7 @@ public class Main {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException {
 		
 			getLinks();
-			
+			//splitter();
 		
 		
 	}// end main
@@ -144,7 +144,8 @@ public class Main {
 		try {
 			/*doc = Jsoup.connect("http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/"
 					+ "%3Cm6c5hv$lu1$1@ger.gmane.org%3E").get();*/
-			String url = "http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/";
+			//String url = "http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/";
+			String url = "http://mail-archives.apache.org/mod_mbox/maven-users/201412.mbox/date?1";
 			doc = Jsoup.connect(url).get();
 			Elements lText = doc.getAllElements();
 			//StringBuilder sb = new StringBuilder();
@@ -154,13 +155,14 @@ public class Main {
 					sb.append(lElement.text());
 				}*/
 				if(lElement.select("a[href]")!=null) {
-					if (lElement.select("a[href]").attr("href").contains("@")) {
+					System.out.println(lElement.select("a[href]").attr("href") );
+					/*if (lElement.select("a[href]").attr("href").contains("@")) {
 						linkcount++;
-						System.out.println("Web page inserted in the queue with URL  " + url + lElement.select("a[href]").attr("href") );
-					break;
+						System.out.println(url + lElement.select("a[href]").attr("href") );
+					
 					} else {
 						System.out.println("not contains @");
-					}
+					}*/
 				}
 			}
 			System.out.println("Link Count " + linkcount);
@@ -189,5 +191,9 @@ public class Main {
 		bw.write("Hello ubuntu");
 		bw.close();
 		System.out.println("Success   " + folder.getPath());
+	}
+	public static void splitter() {
+		String source = "/mod_mbox/maven-users/201412.mbox/%3cCAA8BW8EgW9UZ2NVLbrVZCGA8Xo3b5UotS44KUxhRbGjGiwh8gw@mail.gmail.com%3e";
+		System.out.println(source.split("/")[4]); 
 	}
 }

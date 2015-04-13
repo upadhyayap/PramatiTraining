@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;WebCrawler/src/com/pramati/imaginea/bObj&apos; to &apos;bobj&apos;" description="Rename resource &apos;bObj&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/com/pramati/imaginea/bObj" name="bobj" stamp="1428921035680" updateReferences="true"/>
+</session>
