@@ -1,0 +1,156 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.io.BufferedInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+/**
+ * This is a concrete class down the page hierarchy. It is used to represent an
+ * Email Thread page which differs from normal web page in a sense that this
+ * page has only email thread links which has to be down loaded.
+ * 
+ * @author anandu
+ *
+ */
+@SuppressWarnings("rawtypes")
+public class WebPage implements Page {
+
+	/**
+	 * This represents an url for the webpage. This parameter us mandatory in
+	 * order to create object of this class because there can not exist a web
+	 * page without an url.
+	 * 
+	 */
+	private URL rootUrl;
+	/**
+	 * This blocking queue is used to hold data contained in the Web page in
+	 * form of web element
+	 */
+	
+	@SuppressWarnings("rawtypes")
+	/*private static volatile  BlockingQueue<WebElement> elementQueue;
+	private static volatile BlockingQueue<Page> pageQueue;*/
+	//public static ArrayList<String> visitedpages = new ArrayList<String>();
+	private boolean loaded;
+	private String content;
+	/*static {
+		elementQueue = new ArrayBlockingQueue<WebElement>(150);
+		pageQueue = new ArrayBlockingQueue<Page>(2);
+		new Thread(new PageMonitor(pageQueue)).start();
+		new Thread(new Downloader(elementQueue)).start();
+		
+	}*/
+	
+	/**
+	 * Constructor which takes URL as a String
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(String url) throws MalformedURLException {
+		this(new URL(url));
+	}
+
+	/**
+	 * Constructor which takes URL as a parameter
+	 * 
+	 * @throws MalformedURLException
+	 * 
+	 */
+	public WebPage(URL url) {
+		this.rootUrl = url;
+		this.loaded = false;
+		
+	}
+	
+	/**
+	 * Used to get URl of the Web page
+	 * 
+	 * @return the url
+	 */
+	@Override
+	public URL getUrl() {
+		return rootUrl;
+	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#load (java.lang.Object)
+	 */
+	@Override
+	public void load() throws Exception {
+		
+		
+		URLConnection urlc = this.rootUrl.openConnection();
+		BufferedInputStream buffer = new BufferedInputStream(
+				urlc.getInputStream());
+		
+		StringBuilder builder = new StringBuilder();
+		int byteRead;
+		while ((byteRead = buffer.read()) != -1) {
+			builder.append((char) byteRead);
+		}
+			
+		buffer.close();
+		//new Thread(new Parser(elementQueue, pageQueue, rootUrl.toString())).start();
+		this.loaded = true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.pramati.imaginea.base.Page#save (java.lang.Object)
+	 */
+	@Override
+	public void save() throws Exception {
+
+		if (!loaded) {
+			load();
+			this.loaded = true;
+		}
+		
+	}
+	@Override
+	public boolean equals(Object pWebPage) {
+		if(pWebPage instanceof WebPage) {
+			WebPage lWebpage = (WebPage)pWebPage;
+			return lWebpage.getUrl().toString().equals(this.rootUrl.toString());
+		}
+		return false;
+	}
+	/*private static class PageMonitor implements Runnable {
+		
+		BlockingQueue<Page> workQueue;
+
+		public PageMonitor(BlockingQueue<Page> queue) {
+			this.workQueue = queue;
+		}
+		@Override
+		public void run() {
+			
+			try {
+				WebPage lWebpage;
+				//System.out.println("page monitor waiting for data");
+				while ((lWebpage = (WebPage)workQueue.take()).rootUrl != null) {
+					//System.out.println("page monitor took the data");
+					lWebpage.load();
+				}
+				URL poisionUrl = null;
+				pageQueue.put(new WebPage(poisionUrl));
+				elementQueue.put(new WebText(null));
+				System.out.println("Poision instances inserted");
+				System.out.println("page monitor existing");
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}*/	
+}

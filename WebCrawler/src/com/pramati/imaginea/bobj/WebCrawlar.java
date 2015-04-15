@@ -3,10 +3,10 @@
  */
 package com.pramati.imaginea.bobj;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -22,8 +22,10 @@ import org.jsoup.select.Elements;
 import com.pramati.imaginea.Exceptions.ShutDownException;
 import com.pramati.imaginea.base.Crawlar;
 import com.pramati.imaginea.base.Page;
+import com.pramati.imaginea.base.WebElement;
 import com.pramati.imaginea.base.WebPage;
 import com.pramati.imaginea.utilities.CrawlerConstants;
+import com.pramati.imaginea.utilities.CrawlerUtilities;
 
 /**
  * This is an Web based implementation of Crawler Interface. It is able to crawl
@@ -46,33 +48,45 @@ public class WebCrawlar implements Crawlar {
 	 * This is a thread pool backed by executor service elements are submitted
 	 * in this pool and will get executed upon submitting.
 	 */
-	private ExecutorService threadPool;
+	private static ExecutorService threadPool;
 	/**
 	 * This is a queue backed by Blocking queue. it is used to hold the web
 	 * elements contained in the web page. later Download thread will start
 	 * taking web elements from this queue to operate over those elements.
 	 * 
 	 */
-	private static BlockingQueue<Page> work_Queue;
+	private static BlockingQueue<Page> page_Queue;
+	/**
+	 * This is a queue backed by Blocking queue. it is used to hold the web
+	 * elements contained in the web page. later Download thread will start
+	 * taking web elements from this queue to operate over those elements.
+	 * 
+	 */
+	private static BlockingQueue<WebElement> element_Queue;
 	/**
 	 * This is used for shut down signaling As soon as shutdown request is
 	 * received the crawler will start clearing up it's queued tasks.
 	 * 
 	 */
-	private List<Page> crawledpages;
-	
-	private volatile boolean shutDown_Req = false;
+	// private List<Page> crawledpages;
 
-	private volatile boolean started = false;
+	private static volatile boolean shutDown_Req = false;
+
+	private boolean started = false;
 
 	private int threshold;
-	
-	private ArrayList<String> crawledUrls;
+
+	private static List<String> crawledUrls;
+	public static File Directory = CrawlerUtilities.buildSaveDirectory();
 	/**
 	 * Default constructor for web crawler class this will initiate crawler with
 	 * default crawling capacity
 	 * 
 	 */
+	static {
+		Directory.mkdir();
+	}
+
 	public WebCrawlar() {
 		this(DEFAULT_CRAWL_CAPACITY);
 	}
@@ -84,9 +98,10 @@ public class WebCrawlar implements Crawlar {
 	 */
 	public WebCrawlar(int capacity) {
 		this.threshold = capacity;
-		crawledpages = new ArrayList<Page>(100);
+		crawledUrls = new ArrayList<String>(100);
 		threadPool = Executors.newFixedThreadPool(threshold);
-		work_Queue = new ArrayBlockingQueue<Page>(threshold);
+		page_Queue = new ArrayBlockingQueue<Page>(threshold);
+		element_Queue = new ArrayBlockingQueue<WebElement>(threshold);
 		crawledUrls = new ArrayList<String>();
 	}
 
@@ -102,7 +117,7 @@ public class WebCrawlar implements Crawlar {
 		if (shutDown_Req) {
 			throw new ShutDownException("Crawler already shutted Down");
 		}
-		work_Queue.put(targetPage);
+		page_Queue.put(targetPage);
 	}
 
 	/*
@@ -118,11 +133,12 @@ public class WebCrawlar implements Crawlar {
 		}
 		if (!started) {
 			started = true;
-			new Thread(new Monitor(work_Queue)).start();
+			new Thread(new Monitor(page_Queue)).start();
+			new Thread(new downloader(element_Queue)).start();
 		}
 	}
 
-	private class Monitor implements Runnable {
+	private static class Monitor implements Runnable {
 		BlockingQueue<Page> work;
 
 		public Monitor(BlockingQueue<Page> queue) {
@@ -151,7 +167,7 @@ public class WebCrawlar implements Crawlar {
 
 	}
 
-	private class Traveller implements Runnable {
+	private static class Traveller implements Runnable {
 		Page task;
 
 		public Traveller(Page ptask) {
@@ -161,14 +177,98 @@ public class WebCrawlar implements Crawlar {
 		@Override
 		public void run() {
 			try {
-				//task.save();
+				// task.save();
 				// parse the web page get the result in an array list
-				
-				
+				StringBuilder sb = new StringBuilder();
+				Document doc = Jsoup.connect(task.getUrl().toString())
+						.timeout(0).get();
+				Elements lDomElements = doc.getAllElements();
+				for (Element lElement : lDomElements) {
+					if (lElement.hasText()) {
+						sb.append(lElement.text());
+					}
+					if (lElement.select("a[href]") != null) {
+						if (lElement.select("a[href]").attr("href")
+								.contains("@")) {
+							if (lElement.select("a[href]").attr("href")
+									.contains(CrawlerConstants.appender)) {
+								if (!crawledUrls
+										.contains(CrawlerConstants.RootUrl
+												+ lElement.select("a[href]")
+														.attr("href"))) {
+									page_Queue.put(new WebPage(new URL(
+											CrawlerConstants.RootUrl
+													+ lElement
+															.select("a[href]")
+															.attr("href"))));
+									crawledUrls.add(CrawlerConstants.RootUrl
+											+ lElement.select("a[href]").attr(
+													"href"));
+								}
+							} else {
+								if (!crawledUrls
+										.contains(CrawlerConstants.RootUrl
+												+ lElement.select("a[href]")
+														.attr("href"))) {
+									page_Queue.put(new WebPage(new URL(
+											CrawlerConstants.RootUrl
+													+ CrawlerConstants.appender
+													+ lElement
+															.select("a[href]")
+															.attr("href"))));
+									crawledUrls.add(CrawlerConstants.RootUrl
+											+ CrawlerConstants.appender
+											+ lElement.select("a[href]").attr(
+													"href"));
+								}
+							}
+						}
+					}
+				}
+				if (sb.length() > 0) {
+					element_Queue.put(new WebText(sb.toString()));
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
+		}
+
+	}
+
+	private static class downloader implements Runnable {
+
+		private BlockingQueue<WebElement> elementQueue;
+
+		public downloader(BlockingQueue<WebElement> pElementQueue) {
+			this.elementQueue = pElementQueue;
+		}
+
+		@Override
+		public void run() {
+
+			try {
+				WebElement lQueuedElement;
+				boolean shutdown = false;
+				while (!shutdown) {
+					System.out.println("downloader waiting for data");
+					lQueuedElement = elementQueue.take();
+					System.out.println("downloader took the data");
+					if (lQueuedElement instanceof WebText) {
+						if (((WebText) lQueuedElement).getDataHolder() == null) {
+							shutdown = true;
+							System.out
+									.println("poision element found stoping queue monitoring");
+						} else {
+							System.out.println("Downloading Web Element");
+							lQueuedElement.save(Directory);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -185,30 +285,51 @@ public class WebCrawlar implements Crawlar {
 		shutDown_Req = true;
 
 	}
-	
-	public void parsePage(WebPage pPage) throws IOException, InterruptedException {
+
+	public void parsePage(WebPage pPage) throws IOException,
+			InterruptedException, ShutDownException {
 		StringBuilder sb = new StringBuilder();
-		Document doc = Jsoup.connect(pPage.getUrl().toString()).timeout(0).get();
+		Document doc = Jsoup.connect(pPage.getUrl().toString()).timeout(0)
+				.get();
 		Elements lDomElements = doc.getAllElements();
 		for (Element lElement : lDomElements) {
-			if(lElement.hasText()) {
+			if (lElement.hasText()) {
 				sb.append(lElement.text());
 			}
-			if(lElement.select("a[href]")!=null) {
+			if (lElement.select("a[href]") != null) {
 				if (lElement.select("a[href]").attr("href").contains("@")) {
-					if (lElement.select("a[href]").attr("href").contains(CrawlerConstants.appender)) {
-						work_Queue.put(new WebPage(new URL(CrawlerConstants.RootUrl + lElement.select("a[href]").
-								attr("href"))));
+					if (lElement.select("a[href]").attr("href")
+							.contains(CrawlerConstants.appender)) {
+						if (!crawledUrls.contains(CrawlerConstants.RootUrl
+								+ lElement.select("a[href]").attr("href"))) {
+							addPage(new WebPage(new URL(
+									CrawlerConstants.RootUrl
+											+ lElement.select("a[href]").attr(
+													"href"))));
+							crawledUrls.add(CrawlerConstants.RootUrl
+									+ lElement.select("a[href]").attr("href"));
+						}
+
 					} else {
-						work_Queue.put(new WebPage(new URL(CrawlerConstants.RootUrl+CrawlerConstants.appender + 
-								lElement.select("a[href]").attr("href"))));
+						if (!crawledUrls.contains(CrawlerConstants.RootUrl
+								+ lElement.select("a[href]").attr("href"))) {
+							addPage(new WebPage(new URL(
+									CrawlerConstants.RootUrl
+											+ CrawlerConstants.appender
+											+ lElement.select("a[href]").attr(
+													"href"))));
+							crawledUrls.add(CrawlerConstants.RootUrl
+									+ CrawlerConstants.appender
+									+ lElement.select("a[href]").attr("href"));
+						}
+
 					}
-	
-				} 
+
+				}
 			}
 		}
-		if(sb.length()>0) {
-			
+		if (sb.length() > 0) {
+			element_Queue.put(new WebText(sb.toString()));
 		}
 	}
 }

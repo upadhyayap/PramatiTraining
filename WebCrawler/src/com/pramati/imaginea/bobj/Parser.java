@@ -3,9 +3,11 @@
  */
 package com.pramati.imaginea.bobj;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.concurrent.BlockingQueue;
 
 import org.jsoup.Jsoup;
@@ -49,7 +51,19 @@ public class Parser implements Runnable {
 			/*Document doc =  Jsoup.connect(url).userAgent("Mozilla/36.0.4").timeout(0).followRedirects(true)
 						    .maxBodySize(1024*1024*3).ignoreContentType(true).get();*/
 			//Elements links = doc.select("a[href]");
-			Document doc = Jsoup.connect(url).timeout(0).get();
+			URL rawUrl = new URL(url);
+			URLConnection urlc = rawUrl.openConnection();
+			BufferedInputStream buffer = new BufferedInputStream(
+					urlc.getInputStream());
+			
+			StringBuilder builder = new StringBuilder();
+			int byteRead;
+			while ((byteRead = buffer.read()) != -1)
+				builder.append((char) byteRead);
+			
+			buffer.close();
+			
+			Document doc = Jsoup.parse(builder.toString());
 			Elements lDomElements = doc.getAllElements();
 			int linkcount = 0;
 			for (Element lElement : lDomElements) { 

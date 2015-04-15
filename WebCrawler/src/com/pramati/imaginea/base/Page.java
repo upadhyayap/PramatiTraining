@@ -32,4 +32,6 @@ public interface Page {
 	 * @throws Exception
 	 */
 	public void save() throws Exception;
+	
+	public URL getUrl();
 }
