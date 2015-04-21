@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.TreeSet;
 
 /**
  * 
@@ -15,12 +14,7 @@ public class Start {
 
 	public static void main(String[] args) {
 		File lDir = new File("/home/anandu/Assignment");
-		try {
-			compareFile("/home/anandu/Desktop/Assignment/File1.txt", "/home/anandu/Desktop/Assignment/File2.txt");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		compareFile("/home/anandu/Assignment", "/home/anandu/Assignment");
 	}
 	
 	public static void compareFile(String fILE_ONE2, String fILE_TWO2)throws Exception 
@@ -37,21 +31,13 @@ public class Start {
 
 	String line1 = null;
 	String line2 = null;
-	TreeSet<String> lnames = new TreeSet<String>();
-	while (((line1 = reader1.readLine()) != null)) 
+	
+	while (((line1 = reader1.readLine()) != null)&&((line2 = reader2.readLine()) != null)) 
 	{
-	       lnames.add(line1);
+	       if(line1.equals(line2)) {
+	    	   System.out.println(line1+"----"+line2);
+	       }
 	}
-	
-	while (((line2 = reader2.readLine()) != null)) 
-	{
-	    if(lnames.contains(line2)) {
-	    	System.out.println(line2);
-	    }   
-		
-	}
-	
-	
 	reader1.close();
 	reader2.close();
 

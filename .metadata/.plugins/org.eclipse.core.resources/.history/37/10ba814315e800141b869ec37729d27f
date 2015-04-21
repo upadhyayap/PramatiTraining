@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.TreeSet;
 
 /**
  * 
@@ -37,18 +36,17 @@ public class Start {
 
 	String line1 = null;
 	String line2 = null;
-	TreeSet<String> lnames = new TreeSet<String>();
+	
 	while (((line1 = reader1.readLine()) != null)) 
 	{
-	       lnames.add(line1);
+	       
 	}
 	
-	while (((line2 = reader2.readLine()) != null)) 
+	while (((line1 = reader1.readLine()) != null)&&((line2 = reader2.readLine()) != null)) 
 	{
-	    if(lnames.contains(line2)) {
-	    	System.out.println(line2);
-	    }   
-		
+	       if(line1.equals(line2)) {
+	    	   System.out.println(line1+"----"+line2);
+	       }
 	}
 	
 	
