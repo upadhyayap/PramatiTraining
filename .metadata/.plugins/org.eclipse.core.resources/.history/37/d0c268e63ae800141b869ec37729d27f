@@ -5,12 +5,14 @@ package com.pramati.imaginea.bobj;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+
 import com.pramati.imaginea.base.Equatable;
 import com.pramati.imaginea.utilities.CompareUtil;
 
@@ -22,7 +24,7 @@ public class TextFile implements Equatable<TextFile> {
 
 	private File sourceFile;
 	private Set<String> content = new HashSet<String>();
-	private boolean isContentLoaded = false;
+	private boolean read = false;
 	/**
 	 * 
 	 */
@@ -44,10 +46,10 @@ public class TextFile implements Equatable<TextFile> {
 			throws IllegalArgumentException, IOException {
 		Set<String> matchingContent = new TreeSet<String>();
 		if (targetFile instanceof TextFile) {
-			if(!this.isContentLoaded) {
+			if(!this.read) {
 				read();
 			}
-			if(!targetFile.isContentLoaded) {
+			if(!targetFile.read) {
 				targetFile.read();
 			}
 			if(!this.content.isEmpty()) {
@@ -82,7 +84,7 @@ public class TextFile implements Equatable<TextFile> {
 			this.content.add(PersonName);
 		}
 		buffer.close();
-		isContentLoaded = true;
+		read = true;
 	}
 
 }
