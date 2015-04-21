@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.io.File;
+import java.util.Set;
+
+import com.pramati.imaginea.bobj.TextFile;
+
+/**
+ * @author anandu
+ *
+ */
+public interface Equatable<T> {
+
+	public Set<Object> equate(T target);
+	
+}

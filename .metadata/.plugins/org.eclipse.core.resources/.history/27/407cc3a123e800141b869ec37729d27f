@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.bobj;
+
+import java.io.File;
+import java.util.Set;
+
+import com.pramati.imaginea.base.Equatable;
+
+/**
+ * @author anandu
+ *
+ */
+public class TextFile implements Equatable {
+
+	/**
+	 * 
+	 */
+	public TextFile() {
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pramati.imaginea.base.Equatable#equate(java.io.File)
+	 */
+	@Override
+	public Set<Object> equate(File target) {
+		
+		return null;
+	}
+
+}

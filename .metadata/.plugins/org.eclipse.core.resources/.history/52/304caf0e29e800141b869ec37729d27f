@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+import java.util.Iterator;
+import java.util.Set;
+
+/**
+ * @author anandu
+ *
+ */
+public class CompareUtil {
+
+	/**
+	 * 
+	 */
+	public static boolean isDirectMatchAvalaible(Set<String> pContent,String ptargetWord) {
+		boolean matchAvalaible = false;
+		if (pContent!=null && pContent.contains(ptargetWord)) {
+			
+		}
+		return matchAvalaible;
+	}
+
+}

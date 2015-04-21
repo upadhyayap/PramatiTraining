@@ -1,0 +1,28 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+/**
+ * @author anandu
+ *
+ */
+public class FileComparator {
+
+	/**
+	 * 
+	 */
+	public FileComparator() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+			
+		if(args.length<2)
+
+	}
+
+}

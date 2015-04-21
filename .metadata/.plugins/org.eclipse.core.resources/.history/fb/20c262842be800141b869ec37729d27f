@@ -1,0 +1,42 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.utilities;
+
+import java.util.Iterator;
+import java.util.Set;
+
+/**
+ * @author anandu
+ *
+ */
+public class CompareUtil {
+
+	/**
+	 * 
+	 */
+	public static boolean isDirectMatchAvalaible(Set<String> pContent,
+			String ptargetWord) {
+		boolean matchAvalaible = false;
+		if (pContent != null && pContent.contains(ptargetWord)) {
+			matchAvalaible = true;
+		}
+		return matchAvalaible;
+	}
+
+	public static boolean isReverseMatchAvailaible(Set<String> pContent,
+			String pSourceWord, String pSplitter) {
+		boolean matchAvalaible = false;
+		String firstName = "";
+		String lastname = "";
+		firstName = pSourceWord.split(pSplitter)[0];
+		lastname = pSourceWord.split(pSplitter)[1];
+		Iterator<String> contentIterator = pContent.iterator();
+		while (contentIterator.hasNext()) {
+			String sourcefirstName = contentIterator.next();
+			
+		}
+		return matchAvalaible;
+	}
+
+}

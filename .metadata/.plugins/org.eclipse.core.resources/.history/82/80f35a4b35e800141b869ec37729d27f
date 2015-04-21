@@ -1,0 +1,54 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.startup;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.pramati.imaginea.bobj.TextFile;
+
+/**
+ * @author anandu
+ *
+ */
+public class FileComparator {
+
+	/**
+	 * 
+	 */
+	public FileComparator() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+	
+		try {
+			String sourcepath = "";
+			String targetepath = "";
+			if(args.length>=2) {
+				sourcepath = args[0];
+				targetepath = args[1];
+			}
+			TextFile sourceFile = new TextFile(new File(sourcepath));
+			TextFile targetFile = new TextFile(new File(targetepath));
+			Set<String> matches;
+			matches = sourceFile.equate(targetFile);
+			Iterator<String> matchiterator = matches.iterator();
+			while(matchiterator.hasNext()) {
+				System.out.println(matchiterator.next());
+			}
+		
+		} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+}

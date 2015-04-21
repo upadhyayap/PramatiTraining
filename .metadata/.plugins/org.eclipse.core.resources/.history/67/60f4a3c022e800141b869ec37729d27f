@@ -1,0 +1,17 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+import java.io.File;
+import java.util.Set;
+
+/**
+ * @author anandu
+ *
+ */
+public interface Equatable {
+
+	public Set<E> equate(File target);
+	
+}

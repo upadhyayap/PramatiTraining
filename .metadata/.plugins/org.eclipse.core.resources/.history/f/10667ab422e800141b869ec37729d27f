@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package com.pramati.imaginea.base;
+
+/**
+ * @author anandu
+ *
+ */
+public interface Equatable {
+
+	
+	
+}
