@@ -80,7 +80,7 @@ public class WebText implements WebElement {
 	@Override
 	public void save(File targetFile) throws Exception {
 
-		System.out.println("Downloading started");
+		//System.out.println("Downloading started");
 		File lFile = new File(targetFile, "mail " + "_"
 				+ FILE_COUNT++);
 		lFile.createNewFile();
@@ -94,7 +94,7 @@ public class WebText implements WebElement {
 		lBuffer.flush();
 		lBuffer.close();
 		lWriter.close();
-		System.out.println("Downloading finished");
+		//System.out.println("Downloading finished");
 	}
 
 	@Override

@@ -42,13 +42,13 @@ public class Start {
 			/******* Initialize instance variables ******/
 
 			WebPage Webpage = new WebPage(CrawlerConstants.RootUrl+CrawlerConstants.appender);
-			
 			WebCrawlar webcrawlar = new WebCrawlar();
 
 			webcrawlar.addPage(Webpage);
 			webcrawlar.crawl();
-			//webcrawlar.shutDown();
-
+			Thread.currentThread().join();
+			webcrawlar.shutDown();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Sorry not able to download data");

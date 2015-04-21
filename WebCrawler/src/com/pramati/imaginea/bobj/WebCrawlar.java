@@ -71,7 +71,9 @@ public class WebCrawlar implements Crawlar {
 	// private List<Page> crawledpages;
 
 	private static volatile boolean shutDown_Req = false;
-
+	private static Page rootpage;
+	private static String roothost;
+	
 	private boolean started = false;
 
 	private int threshold;
@@ -104,7 +106,7 @@ public class WebCrawlar implements Crawlar {
 		element_Queue = new ArrayBlockingQueue<WebElement>(threshold);
 		crawledUrls = new ArrayList<String>();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,6 +198,7 @@ public class WebCrawlar implements Crawlar {
 										.contains(CrawlerConstants.RootUrl
 												+ lElement.select("a[href]")
 														.attr("href"))) {
+									
 									page_Queue.put(new WebPage(new URL(
 											CrawlerConstants.RootUrl
 													+ lElement
@@ -204,6 +207,7 @@ public class WebCrawlar implements Crawlar {
 									crawledUrls.add(CrawlerConstants.RootUrl
 											+ lElement.select("a[href]").attr(
 													"href"));
+									
 								}
 							} else {
 								if (!crawledUrls
@@ -252,16 +256,16 @@ public class WebCrawlar implements Crawlar {
 				WebElement lQueuedElement;
 				boolean shutdown = false;
 				while (!shutdown) {
-					System.out.println("downloader waiting for data");
+					//System.out.println("downloader waiting for data");
 					lQueuedElement = elementQueue.take();
-					System.out.println("downloader took the data");
+					//System.out.println("downloader took the data");
 					if (lQueuedElement instanceof WebText) {
 						if (((WebText) lQueuedElement).getDataHolder() == null) {
 							shutdown = true;
-							System.out
-									.println("poision element found stoping queue monitoring");
+							//System.out
+									//.println("poision element found stoping queue monitoring");
 						} else {
-							System.out.println("Downloading Web Element");
+							//System.out.println("Downloading Web Element");
 							lQueuedElement.save(Directory);
 						}
 					}
