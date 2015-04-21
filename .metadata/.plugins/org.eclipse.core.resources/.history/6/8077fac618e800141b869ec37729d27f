@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.TreeSet;
 
 /**
@@ -17,18 +15,19 @@ public class Start {
 
 	public static void main(String[] args) {
 		try {
-			compareFile("/home/anandu/Desktop/Assignment/a.txt",
-					"/home/anandu/Desktop/Assignment/b.txt");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
+			compareFile("/home/anandu/Desktop/Assignment/File1.txt",
+					"/home/anandu/Desktop/Assignment/File2.txt");
+			
+			
+			
+		} catch (Exception e) {
+
 			e.printStackTrace();
 		}
 	}
 
 	public static void compareFile(String fILE_ONE2, String fILE_TWO2)
-			throws FileNotFoundException,IOException {
+			throws Exception {
 
 		File f1 = new File(fILE_ONE2);
 		File f2 = new File(fILE_TWO2);
