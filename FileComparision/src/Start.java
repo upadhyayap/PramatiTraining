@@ -14,47 +14,43 @@ import java.util.TreeSet;
 public class Start {
 
 	public static void main(String[] args) {
-		File lDir = new File("/home/anandu/Assignment");
 		try {
-			compareFile("/home/anandu/Desktop/Assignment/File1.txt", "/home/anandu/Desktop/Assignment/File2.txt");
+			compareFile("/home/anandu/Desktop/Assignment/File1.txt",
+					"/home/anandu/Desktop/Assignment/File2.txt");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
-	
-	public static void compareFile(String fILE_ONE2, String fILE_TWO2)throws Exception 
-	{
 
-	File f1 = new File(fILE_ONE2); //OUTFILE
-	File f2 = new File(fILE_TWO2); //INPUT
+	public static void compareFile(String fILE_ONE2, String fILE_TWO2)
+			throws Exception {
 
-	FileReader fR1 = new FileReader(f1);
-	FileReader fR2 = new FileReader(f2);
+		File f1 = new File(fILE_ONE2);
+		File f2 = new File(fILE_TWO2);
 
-	BufferedReader reader1 = new BufferedReader(fR1);
-	BufferedReader reader2 = new BufferedReader(fR2);
+		FileReader fR1 = new FileReader(f1);
+		FileReader fR2 = new FileReader(f2);
 
-	String line1 = null;
-	String line2 = null;
-	TreeSet<String> lnames = new TreeSet<String>();
-	while (((line1 = reader1.readLine()) != null)) 
-	{
-	       lnames.add(line1);
-	}
-	
-	while (((line2 = reader2.readLine()) != null)) 
-	{
-	    if(lnames.contains(line2)) {
-	    	System.out.println(line2);
-	    }   
-		
-	}
-	
-	
-	reader1.close();
-	reader2.close();
+		BufferedReader reader1 = new BufferedReader(fR1);
+		BufferedReader reader2 = new BufferedReader(fR2);
 
+		String line1 = null;
+		String line2 = null;
+		TreeSet<String> lnames = new TreeSet<String>();
+		while (((line1 = reader1.readLine()) != null)) {
+			lnames.add(line1);
+		}
+
+		while (((line2 = reader2.readLine()) != null)) {
+			if (lnames.contains(line2)) {
+				System.out.println(line2);
+			}
+
+		}
+
+		reader1.close();
+		reader2.close();
 
 	}
 
