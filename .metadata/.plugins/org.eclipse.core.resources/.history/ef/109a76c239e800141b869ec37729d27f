@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
+
 import com.pramati.imaginea.bobj.TextFile;
 
 /**
@@ -34,16 +35,17 @@ public class FileComparator {
 			}
 			TextFile sourceFile = new TextFile(new File(args[0]));
 			TextFile targetFile = new TextFile(new File(args[1]));
-			Set<String> matches = sourceFile.equate(targetFile);
+			Set<String> matches;
+			matches = sourceFile.equate(targetFile);
 			Iterator<String> matchiterator = matches.iterator();
 			while(matchiterator.hasNext()) {
 				System.out.println(matchiterator.next());
 			}
 		
 		} catch (IllegalArgumentException e) {
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

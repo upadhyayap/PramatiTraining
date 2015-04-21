@@ -34,7 +34,8 @@ public class FileComparator {
 			}
 			TextFile sourceFile = new TextFile(new File(args[0]));
 			TextFile targetFile = new TextFile(new File(args[1]));
-			Set<String> matches = sourceFile.equate(targetFile);
+			Set<String> matches;
+			matches = sourceFile.equate(targetFile);
 			Iterator<String> matchiterator = matches.iterator();
 			while(matchiterator.hasNext()) {
 				System.out.println(matchiterator.next());
