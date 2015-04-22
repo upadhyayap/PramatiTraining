@@ -17,4 +17,11 @@
 		<item value="Aggregate for window 1427971516732" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
 		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>
 	</section>
+	<section name="CleanDialogSettings">
+		<item value="603" key="DIALOG_WIDTH"/>
+		<item value="281" key="DIALOG_Y_ORIGIN"/>
+		<item value="391" key="DIALOG_X_ORIGIN"/>
+		<item value="454" key="DIALOG_HEIGHT"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+	</section>
 </section>
